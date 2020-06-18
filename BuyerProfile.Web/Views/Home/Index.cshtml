@@ -1,0 +1,153 @@
+﻿@model List<ProductSellDto>
+@{
+    ViewData["Title"] = "Index";
+}
+@section Styles{
+    <!-- DataTables -->
+    <link href="~/Admin/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Admin/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+}
+
+
+<div class="row">
+    <!-- end page title end breadcrumb -->
+    <partial name="P_SideBar" />
+    <div class="col-xl-8">
+        @*<div class="card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-4">Leads Report</h4>
+
+                    <div id="line_chart_datalabel" class="apex-charts" dir="ltr"></div>
+                </div>
+            </div>
+        </div>*@
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="header-title mb-4">List of purchased products</h5>
+                        @*<div id="radial-chart" class="apex-charts"></div>*@
+
+                        <div class="text-center mt-3">
+                            <div class="row">
+                               
+                                @foreach (var item in Model)
+                                {
+                                <div class="col-6">
+                                    <div>
+                                        <p class="text-muted"><i class="mdi mdi-circle text-warning mr-1"></i>@item.ProductName</p>
+                                        <h5>@item.SellCount</h5>
+                                    </div>
+                                </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="float-right ml-2">
+                    <a href="/AdminPanel/Landings/RegisterLanding">Add New Landing</a>
+                </div>
+                <h5 class="header-title mb-4">Latest LandingPage</h5>
+                <hr />
+                <div class="table-responsive">
+                    <table class="table table-centered table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Domain</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Leads</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="header-title mb-4">Leads/Sale by Location</h5>
+
+                <div id="usa-map" style="height: 150px" class="mb-5"></div>
+
+                <div class="table-responsive">
+                    <table class="table table-centered">
+                        <tbody>
+                            <tr>
+                                <th scope="row">California</th>
+                                <td>8,257 | 4,55</td>
+                                <td>
+                                    <div dir="ltr" class="ml-2">
+                                        <input data-plugin="knob" data-width="36" data-height="36" data-linecap=round data-displayInput=false
+                                               data-fgColor="#3051d3" value="56" data-skin="tron" data-angleOffset="36"
+                                               data-readOnly=true data-thickness=".2" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">New York</th>
+                                <td>7,253 | 8,538</td>
+                                <td>
+                                    <div dir="ltr" class="ml-2">
+                                        <input data-plugin="knob" data-width="36" data-height="36" data-linecap=round data-displayInput=false
+                                               data-fgColor="#3051d3" value="42" data-skin="tron" data-angleOffset="36"
+                                               data-readOnly=true data-thickness=".2" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="text-center">
+                        <a href="#" class="btn btn-primary btn-sm">All locations<i class="mdi mdi-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- End Page-content -->
+<!-- end main content-->
+@section Scripts{
+    <!-- Required datatable js -->
+    <script src="~/Admin/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/Admin/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- datepicker -->
+    <script src="~/Admin/assets/libs/air-datepicker/js/datepicker.min.js"></script>
+    <script src="~/Admin/assets/libs/air-datepicker/js/i18n/datepicker.en.js"></script>
+    <!-- apexcharts -->
+    <script src="~/Admin/assets/libs/apexcharts/apexcharts.min.js"></script>
+    <script src="~/Admin/assets/libs/jquery-knob/jquery.knob.min.js"></script>
+
+    <!-- Jq vector map -->
+    <script src="~/Admin/assets/libs/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/Admin/assets/libs/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- demo js-->
+    <script src="~/Admin/assets/js/pages/apex.init.js"></script>
+    <script src="~/Admin/assets/js/pages/dashboard.init.js"></script>
+    <script>
+        $("#datatable").DataTable();
+    </script>
+}

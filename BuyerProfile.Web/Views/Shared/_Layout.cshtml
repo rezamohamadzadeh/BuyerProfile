@@ -1,0 +1,89 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]-Marketing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesdesign" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/Admin/assets/images/favicon.ico">
+
+    <!-- datepicker -->
+    <link href="~/Admin/assets/libs/air-datepicker/css/datepicker.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- jvectormap -->
+    <link href="~/Admin/assets/libs/jqvmap/jqvmap.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap Css -->
+    <link href="~/Admin/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/Admin/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/Admin/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    @RenderSection("Styles", false)
+
+    <script src="~/Admin/assets/libs/jquery/jquery.min.js"></script>
+
+</head>
+
+<body data-topbar="colored" data-layout="horizontal" data-layout-size="boxed">
+    <div id="layout-wrapper">
+        <partial name="P_Header" />
+        <div class="main-content">
+            <div class="page-content">
+                <!-- Page-Title -->
+                <div class="page-title-box">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h4 class="page-title mb-1">Dashboard</h4>
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item active">Welcome to NOBOX Dashboard</li>
+                                </ol>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="float-right d-none d-md-block">
+                                    <div class="dropdown">
+                                        <button class="btn btn-light btn-rounded dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="mdi mdi-settings-outline mr-1"></i> Settings
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated">
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Separated link</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="page-content-wrapper">
+                    <div class="container-fluid">
+                        @RenderBody()
+                        <partial name="P_Footer" />
+                    </div>
+                </div>
+
+            </div>
+            <!-- end row -->
+
+        </div> <!-- container-fluid -->
+    </div>
+    <div class="rightbar-overlay"></div>
+
+    <!-- JAVASCRIPT -->
+    <script src="~/Admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Admin/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/Admin/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/Admin/assets/libs/node-waves/waves.min.js"></script>
+    <script src="https://unicons.iconscout.com/release/v2.0.1/script/monochrome/bundle.js"></script>
+    <script src="~/Admin/assets/js/app.js"></script>
+    @RenderSection("Scripts", false)
+</body>
+</html>

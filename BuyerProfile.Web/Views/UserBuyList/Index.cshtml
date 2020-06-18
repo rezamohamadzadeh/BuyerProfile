@@ -1,0 +1,185 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <!-- DataTables -->
+    <link href="~/Admin/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Admin/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Admin/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/rating.css" rel="stylesheet" />
+}
+
+
+<div class="row">
+    <!-- end page title end breadcrumb -->
+
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h5><i class="icon fas fa-check"></i> Success !</h5>
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h5><i class="icon fas fa-remove"></i> Error !</h5>
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
+
+                <h5 class="header-title float-left mb-4">User buy list</h5>
+                <br /><br />
+                <hr />
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                @*<th>Email</th>*@
+                                <th>FullName</th>
+                                <th>ProductName</th>
+                                <th>Price</th>
+                                <th>Affiliate code</th>
+                                <th>PayStatus</th>
+                                <th>DiliveryStatus</th>
+                                <th>CreateAt</th>
+                                <th>Rank</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<!-- End Page-content -->
+<!-- end main content-->
+@section Scripts{
+    <!-- Required datatable js -->
+    <script src="~/Admin/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/Admin/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- datepicker -->
+    <script src="~/Admin/assets/libs/air-datepicker/js/datepicker.min.js"></script>
+    <!-- Sweet Alerts js -->
+    <script src="~/Admin/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+    <!-- Sweet alert init js-->
+    <script src="~/Admin/assets/js/pages/sweet-alerts.init.js"></script>
+
+    <script src="~/js/rating.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+
+            $("#myTable").DataTable({
+                "processing": true,
+                "serverSide": true, // for process server side
+                "ajax": {
+                    "url": "/UserBuyList/List",
+                    "type": "POST",
+                    "datatype": "json",
+                    "dataSrc": function (json) {
+                        console.log(json)
+                        return json.data;
+                    }
+
+                },
+                "columns": [
+
+                    //{ "data": "Email", "name": "Email", "autoWidth": true, className: "text-center" },
+                    { "data": "FullName", "name": "FullName", "autoWidth": true, className: "text-center" },
+                    { "data": "ProductName", "name": "ProductName", "autoWidth": true, className: "text-center" },
+                    { "data": "Price", "name": "Price", "autoWidth": true, className: "text-center" },
+                    { "data": "AffiliateCode", "name": "AffiliateCode", "autoWidth": true, className: "text-center" },
+                    { "data": "PayStatus", "name": "PayStatus", "autoWidth": true, className: "text-center" },
+                    { "data": "DiliveryStatus", "name": "DiliveryStatus", "autoWidth": true, className: "text-center" },
+                    { "data": "CreateAt", "name": "CreateAt", "autoWidth": true, className: "text-center" },
+                    { "data": "Rank", "name": "Rank", "autoWidth": true, className: "text-center rating" },
+
+                ],
+                "createdRow": function (row, data, dataIndex) {
+                    var ratingInput = $(row).find('.ratting-item');
+                    initRating(ratingInput);
+                },
+                "columnDefs": [
+                    {
+                        targets: 7,
+                        render: function (data, type, row, meta) {
+                            var checked = 'checked';
+                            switch (row.Rank) {
+                                case 1:
+                                    return '<div class="ratting-item" data-pid=' + row.Id + '><input class="rating" name="vote" type="radio" checked value="1" /><input class="rating" name="vote" type="radio" value="2" /><input class="rating" name="vote" type="radio" value="3" /><input class="rating" name="vote" type="radio" value="4" /><input class="rating" name="vote" type="radio" value="5" /></div>'
+                                    break;
+                                case 2:
+                                    return '<div class="ratting-item" data-pid=' + row.Id + '><input class="rating" name="vote" type="radio" value="1" /><input class="rating" name="vote" type="radio" checked value="2" /><input class="rating" name="vote" type="radio" value="3" /><input class="rating" name="vote" type="radio" value="4" /><input class="rating" name="vote" type="radio" value="5" /></div>'
+                                    break;
+                                case 3:
+                                    return '<div class="ratting-item" data-pid=' + row.Id + '><input class="rating" name="vote" type="radio" value="1" /><input class="rating" name="vote" type="radio" value="2" /><input class="rating" name="vote" type="radio" checked value="3" /><input class="rating" name="vote" type="radio" value="4" /><input class="rating" name="vote" type="radio" value="5" /></div>'
+                                    break;
+                                case 4:
+                                    return '<div class="ratting-item" data-pid=' + row.Id + '><input class="rating" name="vote" type="radio" value="1" /><input class="rating" name="vote" type="radio" value="2" /><input class="rating" name="vote" type="radio" value="3" /><input class="rating" name="vote" type="radio" checked value="4" /><input class="rating" name="vote" type="radio" value="5" /></div>'
+                                    break;
+                                case 5:
+                                    return '<div class="ratting-item" data-pid=' + row.Id + '><input class="rating" name="vote" type="radio" value="1" /><input class="rating" name="vote" type="radio" value="2" /><input class="rating" name="vote" type="radio" value="3" /><input class="rating" name="vote" type="radio" value="4" /><input class="rating" name="vote" type="radio" checked value="5" /></div>'
+                                    break;
+                                default:
+                                    return '<div class="ratting-item" data-pid=' + row.Id + '><input class="rating" name="vote" type="radio" value="1" /><input class="rating" name="vote" type="radio" value="2" /><input class="rating" name="vote" type="radio" value="3" /><input class="rating" name="vote" type="radio" value="4" /><input class="rating" name="vote" type="radio" value="5" /></div>'
+                                    break;
+                            }
+
+                        }
+                    },
+                ],
+            });
+
+
+        });
+        function initRating(ratingInput) {
+        $(ratingInput).rating(function (vote, event) {
+
+        var anchor = $(event.currentTarget),
+            pid = anchor.closest(ratingInput).data("pid"),
+            url = '@Url.Action("RateBuy", "UserBuyList")';
+            $.ajax({
+                url: url,
+                type: "GET",
+                data: { rank: vote, id: pid },
+                success: function (data) {
+
+                    if (data.success) {
+                        Swal.fire({ title: "Successfully", text: "Your rate for order with id : " + data.pid + " and selected vote : " + vote + " stored successfully", icon: "success", showCancelButton: 0, confirmButtonColor: "#3051d3" })
+                    }
+                    else {
+                        Swal.fire({ title: "Error", html: "Error in store rate!!! <br> please try again!", icon: "error", showCancelButton: 0, confirmButtonColor: "#3051d3" })
+                    }
+                },
+                error: function (err) {
+                },
+                complete: function () {
+                }
+            });
+        });
+
+        }
+    </script>
+
+
+}
