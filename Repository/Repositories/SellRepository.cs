@@ -1,7 +1,7 @@
 ﻿using DAL;
 using DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using Repository.IRepositories;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,12 +9,26 @@ namespace Repository.Repositories
 {
     public class SellRepository : GenericRepositori<Tb_Sell>, ISellRepository
     {
-        public SellRepository(ApplicationDbContext Db) : base(Db)
-        { }
+        private readonly DbContext _db;
+        public SellRepository(DbContext db) : base(db)
+        {
+            _db = (_db ?? (BuyerDbContext)db);
+        }
 
-        public List<Tb_Sell> GetAllUserBuy(string draw, string length, string sortColumn, string sortColumnDirection, string searchValue, int pageSize, int skip, ref int recordsTotal)
+
+        public List<Tb_Sell> Filter(string draw,
+            string length,
+            string sortColumn,
+            string sortColumnDirection,
+            string searchValue,
+            int pageSize,
+            int skip,
+            ref int recordsTotal,
+            string Email)
         {
             IQueryable<Tb_Sell> query = _dbset;
+
+            query = query.Where(d => d.Email == Email);
 
             if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
             {

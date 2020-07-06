@@ -1,22 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DAL.Migrations
+namespace DAL.Migrations.BaseDb
 {
-    public partial class Add_ImageInApplicationUser : Migration
+    public partial class AddEmail_SupportModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Image",
-                table: "AspNetUsers",
+                name: "Email",
+                table: "Tb_Supports",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Image",
-                table: "AspNetUsers");
+                name: "Email",
+                table: "Tb_Supports");
         }
     }
 }

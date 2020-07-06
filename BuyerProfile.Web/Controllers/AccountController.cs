@@ -1,19 +1,15 @@
 ﻿using BuyerProfile.Models.AccountViewModels;
-using Common.Extensions;
+using BuyerProfile.Web.Controllers;
+using DAL;
 using DAL.Models;
-using Marketing.Areas.AdminPanel.Controllers;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Repository.IRepositories;
+using Repository.InterFace;
 using Service;
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -26,20 +22,20 @@ namespace BuyerProfile.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
-        private IUserRepository _userRepository;
+        private IUnitOfWork<BuyerDbContext> _uow;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            IUserRepository userRepository,
+            IUnitOfWork<BuyerDbContext> uow,
             ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
-            _userRepository = userRepository;
+            _uow = uow;
         }
 
         [TempData]
@@ -70,7 +66,7 @@ namespace BuyerProfile.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    var user = _userRepository.GetUserByName(model.Email);
+                    var user = _uow.UserRepo.GetUserByName(model.Email);
                     if (!user.IsActive)
                     {
                         ModelState.AddModelError(string.Empty, "Your Account didnt Active");

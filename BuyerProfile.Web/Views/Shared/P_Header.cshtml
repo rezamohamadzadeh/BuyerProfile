@@ -56,7 +56,7 @@
                     </span>
                 </a>
 
-                <a href="index.html" class="logo logo-light">
+                <a asp-action="Index" asp-controller="Home" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="~/Admin/assets/images/logo-sm-light.png" alt="" height="22">
                     </span>
@@ -69,7 +69,6 @@
             <button type="button" class="btn btn-sm mr-2 font-size-16 d-lg-none header-item waves-effect waves-light" data-toggle="collapse" data-target="#topnav-menu-content">
                 <i class="fa fa-fw fa-bars"></i>
             </button>
-
             <div class="topnav">
                 <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
 
@@ -90,7 +89,6 @@
                                     <a href="~/Account/ResetPassword" class="dropdown-item">
                                         <div class="d-inline-block icons-sm mr-2"><i class="uim uim-schedule"></i></div> Reset Password
                                     </a>
-
                                 </div>
                             </li>
                             <li class="nav-item">
@@ -98,7 +96,11 @@
                                     Buy List
                                 </a>
                             </li>
-
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="Support">
+                                    Support Manage
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </nav>

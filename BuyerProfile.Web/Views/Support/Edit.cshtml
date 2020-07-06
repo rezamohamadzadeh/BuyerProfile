@@ -1,0 +1,39 @@
+﻿@model SupportDto
+@{
+    Layout = null;
+}
+
+
+<div id="mymodal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white">Edit ticket</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <form asp-controller="Support" asp-action="Edit" id="form" data-ajax-failure="EditFailed" data-ajax-success="EditSuccess"
+                  data-ajax="true" data-ajax-method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i class="icon fas fa-remove"></i> Error !</h5>
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+                    <input type="hidden" asp-for="Id" />
+                    <partial name="_CreateOrUpdate" model="Model" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    @if (Model.SupportPosition == null || Model.SupportPosition.Contains("Pending"))
+                    {
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWork<TEntity> : IUnitOfWork<TEntity> where TEntity : DbContext, IDisposable
     {
-        private readonly ApplicationDbContext _dbContext;
-        public UnitOfWork(ApplicationDbContext dbContext)
+        private readonly DbContext _dbContext;
+        public UnitOfWork(TEntity dbContext)
         {
             _dbContext = dbContext;
         }
@@ -44,6 +44,34 @@ namespace Repository
             }
         }
 
+        private SupportRepository _supportRepository;
+
+        public SupportRepository SupportRepo
+        {
+            get
+            {
+                if (_supportRepository == null)
+                {
+                    _supportRepository = new SupportRepository(_dbContext);
+                }
+                return _supportRepository;
+            }
+        }
+        private SupportTypeRepository _supportTypeRepository;
+
+        public SupportTypeRepository SupportTypeRepo
+        {
+            get
+            {
+                if (_supportTypeRepository == null)
+                {
+                    _supportTypeRepository = new SupportTypeRepository(_dbContext);
+                }
+                return _supportTypeRepository;
+            }
+        }
+
+
         private SellRepository _sellRepository;
 
         public SellRepository SellRepo
@@ -58,7 +86,7 @@ namespace Repository
             }
         }
 
-        private AffiliateParameterRepository  _affiliateParameter;
+        private AffiliateParameterRepository _affiliateParameter;
 
         public AffiliateParameterRepository AffiliateParameterRepo
         {
@@ -82,12 +110,6 @@ namespace Repository
             await _dbContext.SaveChangesAsync();
         }
 
-        public void Dispose()
-        {
-            _dbContext.Dispose();
-        }
-
-
         #region BackUpFromDb
         public bool BackUpFromDb(string path)
         {
@@ -102,6 +124,10 @@ namespace Repository
             }
         }
         #endregion
-        
+
+        public void Dispose()
+        {
+            _dbContext.Dispose();
+        }
     }
 }

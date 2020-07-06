@@ -1,17 +1,14 @@
 ﻿using DAL.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DAL
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class BuyerDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions options) : base(options)
-        { }
+        public BuyerDbContext(DbContextOptions<BuyerDbContext> options) : base(options) { 
+        
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {            

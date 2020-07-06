@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>@ViewData["Title"]-Marketing</title>
+    <title>@ViewData["Title"]-Buyer profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesdesign" name="author" />
@@ -29,6 +29,7 @@
 </head>
 
 <body data-topbar="colored" data-layout="horizontal" data-layout-size="boxed">
+    <div id="modal-placeholder"></div>
     <div id="layout-wrapper">
         <partial name="P_Header" />
         <div class="main-content">
@@ -43,7 +44,7 @@
                                     <li class="breadcrumb-item active">Welcome to NOBOX Dashboard</li>
                                 </ol>
                             </div>
-                            <div class="col-md-4">
+                            @*<div class="col-md-4">
                                 <div class="float-right d-none d-md-block">
                                     <div class="dropdown">
                                         <button class="btn btn-light btn-rounded dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,7 +59,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
 
                     </div>
@@ -78,11 +79,12 @@
     <div class="rightbar-overlay"></div>
 
     <!-- JAVASCRIPT -->
+    <script src="~/js/Ajax.js"></script>
+    <script src="~/js/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/Admin/assets/libs/metismenu/metisMenu.min.js"></script>
     <script src="~/Admin/assets/libs/simplebar/simplebar.min.js"></script>
     <script src="~/Admin/assets/libs/node-waves/waves.min.js"></script>
-    <script src="https://unicons.iconscout.com/release/v2.0.1/script/monochrome/bundle.js"></script>
     <script src="~/Admin/assets/js/app.js"></script>
     @RenderSection("Scripts", false)
 </body>

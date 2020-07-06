@@ -2,18 +2,15 @@
 using BuyerProfile.Web.Models;
 using Common.Extensions;
 using Common.Images;
+using DAL;
 using DAL.Models;
-using Marketing.Areas.AdminPanel.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Repository.InterFace;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BuyerProfile.Web.Controllers
@@ -23,11 +20,11 @@ namespace BuyerProfile.Web.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _uow;
+        private readonly IUnitOfWork<BuyerDbContext> _uow;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         public HomeController(UserManager<ApplicationUser> userManager,
-            IMapper mapper, IUnitOfWork uow,
+            IMapper mapper, IUnitOfWork<BuyerDbContext> uow,
             SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;

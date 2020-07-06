@@ -1,11 +1,11 @@
 using System;
 using AutoMapper;
-using BuyerProfile.Web.Controllers;
 using BuyerProfile.Web.Utility;
 using DAL;
 using DAL.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,35 +14,37 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using Repository;
 using Repository.InterFace;
-using Repository.IRepositories;
-using Repository.Repositories;
 using Service;
 using Service.EmailService;
+
 namespace BuyerProfile.Web
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration; 
+            Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation()
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 });
-
-            services.AddDbContext<ApplicationDbContext>(Options => Options.UseSqlServer(Configuration.GetConnectionString("Local")));
+            services.AddTransient<IUnitOfWork<BaseDbContext>, UnitOfWork<BaseDbContext>>();
+            services.AddDbContext<BuyerDbContext>(Options => Options.UseSqlServer(Configuration.GetConnectionString("BuyerDb")));
+            services.AddDbContext<BaseDbContext>(Options => Options.UseSqlServer(Configuration.GetConnectionString("BaseDb")));
             #region identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddRoleManager<RoleManager<IdentityRole>>()
                     .AddDefaultTokenProviders()
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddEntityFrameworkStores<BuyerDbContext>();
             services.AddTransient<IUserClaimsPrincipalFactory<ApplicationUser>, MyClaimsPrincipalFactory>();
 
             services.Configure<IdentityOptions>(option =>
@@ -51,14 +53,14 @@ namespace BuyerProfile.Web
                 option.Password.RequireNonAlphanumeric = false;
                 option.Password.RequireUppercase = false;
             });
+
             services.ConfigureApplicationCookie(options =>
             {
                 options.ExpireTimeSpan = TimeSpan.FromHours(1);  // for set time out cookie authentication
             });
             #endregion
             #region Inject requirements
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUnitOfWork<BuyerDbContext>, UnitOfWork<BuyerDbContext>>();
             #endregion
             #region Gmail Service
             services.AddTransient<IEmailSender, EmailSender>(); // Dependecy injection For Email Service
@@ -69,12 +71,14 @@ namespace BuyerProfile.Web
             #endregion
             #region AutoMapper
             services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(HttpContextAccessor));
             #endregion
-            services.AddSession(options => {
+            services.AddSession(options =>
+            {
                 options.IdleTimeout = TimeSpan.FromMinutes(20);//You can set Time   
             });
 
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

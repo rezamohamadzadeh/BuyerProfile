@@ -1,0 +1,54 @@
+﻿@model SupportDto
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="font-size-14 font-weight-bold" asp-for="Message"></label>
+                <textarea rows="2" asp-for="@Model.Message" class="form-control"></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="font-size-14 font-weight-bold" asp-for="TypeId"></label>
+                <select asp-for="TypeId" class="form-control" asp-items="ViewBag.SupportTypes">
+                    <option value="">Please select your support</option>
+                </select>
+                <span asp-validation-for="TypeId" class="text-danger"></span>
+            </div>
+        </div>
+        @if (Model.SupportPosition == null || Model.SupportPosition.Contains("Pending"))
+        {
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="font-size-14 font-weight-bold" asp-for="File"></label>
+                    <input asp-for="Attachment" type="file" name="Attachment" class="form-control" />
+
+                    <span asp-validation-for="File" class="text-danger"></span>
+                </div>
+            </div>
+        }
+
+        @if (Model.File != null && Model.File != "")
+        {
+            <div class="col-md-6">
+                <br />
+                <a href="@Model.File" target="_blank" class="btn btn-success btn-block"> Your Attachments <i class="fa fa-download"></i></a>
+                <br />
+                @*<img class="rounded-circle" width="200" height="200" src="~/supportFiles/@Model.File" alt="support Attachment">*@
+            </div>
+        }
+        @if (Model.AnswerDateTime != null)
+        {
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="font-size-14 font-weight-bold" asp-for="AnswerMessage"></label>
+                    <textarea rows="2" disabled="disabled" asp-for="@Model.AnswerMessage" class="form-control"></textarea>
+                </div>
+            </div>
+        }
+    </div>
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}

@@ -41,7 +41,8 @@ namespace DAL.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    IsActive = table.Column<bool>(nullable: false)
+                    IsActive = table.Column<bool>(nullable: false),
+                    Image = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,6 +95,7 @@ namespace DAL.Migrations
                     Price = table.Column<double>(nullable: false),
                     ProductName = table.Column<string>(nullable: true),
                     TransActionId = table.Column<string>(nullable: true),
+                    Rank = table.Column<int>(nullable: false),
                     DiliveryStatus = table.Column<int>(nullable: false),
                     PayStatus = table.Column<int>(nullable: false),
                     CreateAt = table.Column<DateTime>(nullable: false)

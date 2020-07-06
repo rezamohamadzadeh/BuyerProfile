@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿
 using AutoMapper;
 using BuyerProfile.Web.Models;
-using Marketing.Areas.AdminPanel.Controllers;
+using Common.Extensions;
+using DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repository.InterFace;
+using System;
+using System.Collections.Generic;
 
 namespace BuyerProfile.Web.Controllers
 {
@@ -16,9 +15,9 @@ namespace BuyerProfile.Web.Controllers
     public class UserBuyListController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _uow;
+        private readonly IUnitOfWork<BuyerDbContext> _uow;
 
-        public UserBuyListController(IMapper mapper, IUnitOfWork uow)
+        public UserBuyListController(IMapper mapper, IUnitOfWork<BuyerDbContext> uow)
         {
             _mapper = mapper;
             _uow = uow;
@@ -29,13 +28,29 @@ namespace BuyerProfile.Web.Controllers
         }
         public IActionResult List()
         {
-            var dtValues = SetDataTableRequest();
-            int recordsTotal = 0;
-            var data = _mapper.Map<List<SellDto>>(_uow.SellRepo.GetAllUserBuy(dtValues.draw, dtValues.length, dtValues.sortColumn, dtValues.sortColumnDirection, dtValues.searchValue, dtValues.pageSize, dtValues.skip, ref recordsTotal));
+            try
+            {
+                var dtValues = SetDataTableRequest();
+                int recordsTotal = 0;
+                var data = _mapper.Map<List<SellDto>>(_uow.SellRepo.Filter(dtValues.draw,
+                    dtValues.length,
+                    dtValues.sortColumn,
+                    dtValues.sortColumnDirection,
+                    dtValues.searchValue,
+                    dtValues.pageSize,
+                    dtValues.skip,
+                    ref recordsTotal,
+                    UserExtention.GetUserMail(User)));
 
-            dtValues.recordsTotal = recordsTotal;
+                dtValues.recordsTotal = recordsTotal;
 
-            return Json(new AjaxResult { draw = dtValues.draw, recordsFiltered = dtValues.recordsTotal, recordsTotal = dtValues.recordsTotal, data = data });
+                return Json(new AjaxResult { draw = dtValues.draw, recordsFiltered = dtValues.recordsTotal, recordsTotal = dtValues.recordsTotal, data = data });
+            }
+            catch (Exception ex)
+            {
+                return Json("error");
+            }
+            
         }
 
         public ActionResult RateBuy(int id, int rank)

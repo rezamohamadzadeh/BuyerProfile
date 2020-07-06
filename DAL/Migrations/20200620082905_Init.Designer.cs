@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200617070939_AddRank_InSellModel")]
-    partial class AddRank_InSellModel
+    [DbContext(typeof(BuyerDbContext))]
+    [Migration("20200620082905_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

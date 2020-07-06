@@ -1,22 +1,20 @@
 ﻿using DAL.Models;
 using Repository.InterFace;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository.IRepositories
 {
-    public interface ISellRepository : IGenericRepository<Tb_Sell>
+    public interface ISupportRepository : IGenericRepository<Tb_Support>
     {
-        List<Tb_Sell> Filter(string draw,
+        List<Tb_Support> Filter(string draw,
             string length,
             string sortColumn,
             string sortColumnDirection,
             string searchValue,
             int pageSize,
             int skip,
-            ref int recordsTotal,
-            string Email);
+            ref int recordsTotal,            
+            string UserId,
+            string include = null);
     }
 }
