@@ -1,0 +1,43 @@
+﻿<nav class="bottom-navbar">
+    <div class="container">
+        <ul class="nav page-navigation">
+            <li class="nav-item">
+                <a class="nav-link" asp-action="Index" asp-controller="Home">
+                    <i class="mdi mdi-view-dashboard-outline menu-icon"></i>
+                    <span class="menu-title">Dashboard</span>
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" asp-action="Index" asp-controller="Support">
+                    <i class="mdi mdi-send-circle-outline menu-icon"></i>
+                    <span class="menu-title">Support</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="mdi mdi-printer menu-icon"></i>
+                    <span class="menu-title">Reports</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="submenu">
+                    <ul class="submenu-item">
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="add-ajax-modal" href="javascript:void(0);" data-url="@Url.Action("FilterUserPurchases","Report")">
+                                <i class="mdi mdi-printer menu-icon"></i>
+                                <span class="menu-title">Buyer Purchases</span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </li>            
+            <li class="nav-item">
+                <a asp-action="Index" asp-controller="UserBuyList" class="nav-link">
+                    <i class="mdi mdi-file-document-box-outline menu-icon"></i>
+                    <span class="menu-title">User purchases</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace BuyerProfile.Models.AccountViewModels
+namespace BuyerProfile.Web.Models.AccountViewModels
 {
     public class LoginViewModel
     {
-        [EmailAddress(ErrorMessage = "لطفا ایمیل را بدرستی وارد کنید")]
-        [Required(ErrorMessage = "لطفا فیلد {0} را وارد کنید")]
-        [Display(Name = "نام کاربری")]
+        [EmailAddress(ErrorMessage = "Please enter valid {0}")]
+        [Required(ErrorMessage = "Please enter {0}")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "لطفا فیلد {0} را وارد کنید")]
-        [Display(Name = "کلمه عبور")]
+        [Required(ErrorMessage = "Please enter {0}")]
+        [Display(Name = "Password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "مرا به خاطر بسپار")]
+        [Display(Name = "RememberMe")]
         public bool RememberMe { get; set; }
     }
 }

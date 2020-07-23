@@ -1,13 +1,9 @@
 ﻿@model ProfileDto
 @{
     ViewData["Title"] = "Profile";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Styles{
 
-    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
-}
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -30,8 +26,8 @@
                         @ViewBag.ErrorMessage
                     </div>
                 }
-                
-                <form asp-action="Profile" method="post" enctype="multipart/form-data">
+
+                <form asp-action="Profile" method="post" class="pt-3" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row">
                         <input type="hidden" asp-for="Id" />
@@ -64,67 +60,6 @@
     </div>
 
 </div>
-@section Scripts{
-    <script src="~/lib/select2/js/select2.js"></script>
-    <script>
-        $(document).ready(function () {
-            $(".select2").select2();
-            HideAllPaymentInputs();
-
-            if ($('.select2').val() != "") {
-                SetSwithCase($('.select2').val());
-            }
-            else
-                ResetPayPalValues();
-
-        });
-        $('.select2').on('select2:select', function (e) {
-            ResetPayPalValues();
-            var data = e.params.data;
-            HideAllPaymentInputs();
-            if (data.id != "") {
-                SetSwithCase(data.id);
-            }
-
-        });
-        function SetSwithCase(id) {
-            switch (id) {
-                case "PayPal":
-                    $("#payPalSecret").show();
-                    $("#payPalCli").show();
-                    $("#payPalBus").show();
-                    break;
-                case "Stripe":
-                    $("#stripPrivate").show();
-                    $("#stripPublish").show();
-                    break;
-                case "Both":
-                    $("#payPalSecret").show();
-                    $("#payPalCli").show();
-                    $("#payPalBus").show();
-                    $("#stripPrivate").show();
-                    $("#stripPublish").show();
-                    break;
-                default:
-                    break;
-            }
-        }
-        function ResetPayPalValues() {
-            $("#StripePublishKey").val(null);
-            $("#StripPrivateKey").val(null);
-            $("#PayPalBusines").val(null);
-            $("#PayPalClientId").val(null);
-            $("#PayPalSecretKey").val(null);
-        }
-        function HideAllPaymentInputs() {
-            $("#payPalSecret").hide();
-            $("#payPalCli").hide();
-            $("#payPalBus").hide();
-            $("#stripPrivate").hide();
-            $("#stripPublish").hide();
-        }
-    </script>
-}
 
 @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");

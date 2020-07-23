@@ -31,6 +31,10 @@ namespace BuyerProfile.Web.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// show support list in listview with jquery datatabale
+        /// </summary>
+        /// <returns></returns>
         public IActionResult List()
         {
             try
@@ -134,7 +138,11 @@ namespace BuyerProfile.Web.Controllers
                 return Json(new { error = ErrorMessage + " " + ex.Message });
             }
         }
-
+        /// <summary>
+        /// edit support in modal
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Edit(int? id)
         {
             try
@@ -227,6 +235,9 @@ namespace BuyerProfile.Web.Controllers
             return View(supportDto);
         }
 
+        /// <summary>
+        /// feach Support Type in modal view
+        /// </summary>
         private void FeachPayTypeCombo()
         {
             try

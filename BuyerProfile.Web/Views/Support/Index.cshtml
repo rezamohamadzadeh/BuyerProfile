@@ -4,10 +4,9 @@
 }
 @section Styles{
     <!-- DataTables -->
-    <link href="~/Admin/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Admin/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Admin/vendors/datatables.net-bs4/dataTables.bootstrap4.css" rel="stylesheet" />
+    <link href="~/datatables/buttons.dataTables.min.css" rel="stylesheet" />
     <link href="~/Admin/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/css/rating.css" rel="stylesheet" />
 }
 
 
@@ -57,10 +56,15 @@
 <!-- end main content-->
 @section Scripts{
     <!-- Required datatable js -->
-    <script src="~/Admin/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="~/Admin/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <!-- datepicker -->
-    <script src="~/Admin/assets/libs/air-datepicker/js/datepicker.min.js"></script>
+    <script src="~/Admin/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/Admin/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="~/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/datatables/buttons.flash.min.js"></script>
+    <script src="~/datatables/jszip.min.js"></script>
+    <script src="~/datatables/pdfmake.min.js"></script>
+    <script src="~/datatables/vfs_fonts.js"></script>
+    <script src="~/datatables/buttons.html5.min.js"></script>
+    <script src="~/datatables/buttons.print.min.js"></script>
     <!-- Sweet Alerts js -->
     <script src="~/Admin/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
@@ -96,10 +100,10 @@
                         render: function (data, type, row, meta) {
                             if (row.SupportPosition == 'Pending')
                                 return '<div class="btn-group" role="group"><button class="btn btn-outline-secondary btn-sm" data-toggle="edit-ajax-modal" data-url="/Support/Edit/' + data + '"><i class="mdi mdi-pencil"></i></button><button  class="btn btn-outline-secondary btn-sm" type="button" href="javascript:void(0)" title="Delete" onclick=DeleteData(\'' + "/Support/Delete" + '\',' + data + ')><i class="mdi mdi-trash-can"></i></button></div>';
-                            else if(row.SupportPosition == 'Delivered')
+                            else if (row.SupportPosition == 'Delivered')
                                 return 'Delivered';
                             else
-                            return '<div class="btn-group" role="group"><button class="btn btn-outline-secondary btn-sm" data-toggle="edit-ajax-modal" data-url="/Support/Edit/' + data + '"><i class="mdi mdi-pencil"></i></button></div>';
+                                return '<div class="btn-group" role="group"><button class="btn btn-outline-secondary btn-sm" data-toggle="edit-ajax-modal" data-url="/Support/Edit/' + data + '"><i class="mdi mdi-pencil"></i></button></div>';
                         }
                     },
                 ],
@@ -107,7 +111,7 @@
 
 
         });
-        
+
     </script>
 
 

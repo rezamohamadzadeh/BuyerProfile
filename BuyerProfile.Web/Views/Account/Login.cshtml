@@ -10,100 +10,81 @@
 }
 <!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
-    <title>Login | NOBox - Marketing Booster</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-    <meta content="Themesdesign" name="author" />
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="~/Admin/assets/images/favicon.ico">
-
-    <!-- Bootstrap Css -->
-    <link href="~/Admin/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <!-- Icons Css -->
-    <link href="~/Admin/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <!-- App Css-->
-    <link href="~/Admin/assets/css/app.min.css" rel="stylesheet" type="text/css" />
-
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Wagondash Premium Bootstrap Admin Dashboard Template</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="~/Admin/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="~/Admin/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="~/css/horizontal-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="~/images/favicon.png">
 </head>
 
-<body class="bg-primary bg-pattern">
-    @*<div class="home-btn d-none d-sm-block">
-        <a href="index.html"><i class="mdi mdi-home-variant h2 text-white"></i></a>
-    </div>*@
-
-    <div class="account-pages my-5 pt-sm-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="text-center mb-5">
-                        <a href="index.html" class="logo"><img src="~/Admin/assets/images/logo-light.png" height="24" alt="logo"></a>
-                        <h5 class="font-size-16 text-white-50 mb-4">Marketing Booster</h5>
-                    </div>
-                </div>
-            </div>
-            <!-- end row -->
-
-            <div class="row justify-content-center">
-                <div class="col-xl-5 col-sm-8">
-                    <div class="card">
-                        <div class="card-body p-4">
-                            <div class="p-2">
-                                <h5 class="mb-5 text-center">Sign in to continue to NOBOX.</h5>
-
-                                <form asp-route-returnurl="@ViewData["ReturnUrl"]" class="form-horizontal" method="post">
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="main-panel">
+                <div class="content-wrapper d-flex align-items-center auth px-0">
+                    <div class="row w-100 mx-0">
+                        <div class="col-lg-4 mx-auto">
+                            <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+                                <div class="brand-logo">
+                                    <img src="~/images/logo-dark.svg" alt="logo">
+                                </div>
+                                <h4>Hello! let's get started</h4>
+                                <h6 class="font-weight-light">Sign in to continue.</h6>
+                                <form asp-route-returnurl="@ViewData["ReturnUrl"]" class="pt-3" method="post">
                                     <div asp-validation-summary="All" class="text-danger"></div>
-                                    <div class="form-group form-group-custom mb-4">
-                                        <input asp-for="Email" class="form-control" id="username" required />
-                                        <label for="username">Email</label>
-
+                                    <div class="form-group">
+                                        <input type="email" asp-for="Email" class="form-control form-control-lg" required placeholder="Email">
                                         <span asp-validation-for="Email" class="text-danger"></span>
-
                                     </div>
-                                    <div class="form-group form-group-custom mb-4">
-                                        <input asp-for="Password" class="form-control" id="userpassword" required />
-                                        <label for="username">PassWord</label>
+                                    <div class="form-group">
+                                        <input type="password" asp-for="Password" class="form-control form-control-lg" required placeholder="Password">
                                         <span asp-validation-for="Password" class="text-danger"></span>
                                     </div>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="customControlInline">
-                                                <label class="custom-control-label" for="customControlInline">Remember me</label>
-                                            </div>
-                                        </div>
-                                        @*<div class="col-md-6">
-                                            <div class="text-md-right mt-3 mt-md-0">
-                                                <a href="/Account/ForgotPassword" class="text-muted"><i class="mdi mdi-lock"></i> Forgot your password?</a>
-                                            </div>
-                                        </div>*@
+                                    <div class="mt-3">
+                                        <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">SIGN IN</button>
                                     </div>
-                                    <div class="mt-4">
-                                        <button class="btn btn-success btn-block waves-effect waves-light" type="submit">Log In</button>
+                                    <div class="my-2 d-flex justify-content-between align-items-center">
+                                        <div class="form-check">
+                                            <label class="form-check-label text-muted">
+                                                <input type="checkbox" asp-for="RememberMe" class="form-check-input">
+                                                Keep me signed in
+                                                <i class="input-helper"></i>
+                                            </label>
+                                        </div>
+                                        <a href="#" class="auth-link text-black">Forgot password?</a>
+                                    </div>
+
+                                    <div class="text-center mt-4 font-weight-light">
+                                        Don't have an account? <a href="register.html" class="text-primary">Create</a>
                                     </div>
                                 </form>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- end row -->
         </div>
     </div>
-    <!-- end Account pages -->
-    <!-- JAVASCRIPT -->
-    <script src="~/Admin/assets/libs/jquery/jquery.min.js"></script>
-    <script src="~/Admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="~/Admin/assets/libs/metismenu/metisMenu.min.js"></script>
-    <script src="~/Admin/assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="~/Admin/assets/libs/node-waves/waves.min.js"></script>
-
-    <script src="https://unicons.iconscout.com/release/v2.0.1/script/monochrome/bundle.js"></script>
-
-    <script src="~/Admin/assets/js/app.js"></script>
+    <script src="~/Admin/vendors/js/vendor.bundle.base.js"></script>
+    <script src="~/js/off-canvas.js"></script>
+    <script src="~/js/hoverable-collapse.js"></script>
+    <script src="~/js/template.js"></script>
+    <script src="~/js/settings.js"></script>
+    <script src="~/js/todolist.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
 </body>
 </html>

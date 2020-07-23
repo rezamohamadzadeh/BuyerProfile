@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Repository.InterFace;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,13 +19,15 @@ namespace BuyerProfile.Web.Controllers
     [Authorize]
     public class HomeController : BaseController
     {
+        #region Fields
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork<BuyerDbContext> _uow;
+        private readonly IUnitOfWork<BaseDbContext> _uow;
         private readonly SignInManager<ApplicationUser> _signInManager;
-
+        #endregion
+        #region Ctor
         public HomeController(UserManager<ApplicationUser> userManager,
-            IMapper mapper, IUnitOfWork<BuyerDbContext> uow,
+            IMapper mapper, IUnitOfWork<BaseDbContext> uow,
             SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
@@ -32,15 +35,46 @@ namespace BuyerProfile.Web.Controllers
             _uow = uow;
             _signInManager = signInManager;
         }
-
+        #endregion
+        #region Actions
         public IActionResult Index()
         {
-            var userSells = _uow.SellRepo.Get(d => d.Email == User.Identity.Name && d.PayStatus != PayStatus.Registered)
-                .GroupBy(m => m.ProductName)
-                .Select(d => new ProductSellDto { ProductName = d.Key, SellCount = d.Count() })
-                .OrderBy(x => x.ProductName).ToList();
-            return View(userSells);
+            return View();
         }
+
+        /// <summary>
+        /// show dashboard items as ajax json by DateTime parameter
+        /// </summary>
+        /// <param name="filterValue"></param>
+        /// <returns></returns>
+        public JsonResult GetDashboardActivities(int filterValue = 0)
+        {
+
+            var userPurchases = _mapper.Map<IEnumerable<SellDto>>(_uow.SellRepo.GetPurchasesOnDashboard(5, UserExtention.GetUserMail(User), filterValue));
+
+            var registered = filterValue == 0 ? _uow.SellRepo.Get(d => d.Email == UserExtention.GetUserMail(User) && d.PayStatus == PayStatus.Registered) : _uow.SellRepo.Get(d => d.Email == UserExtention.GetUserMail(User) && d.PayStatus == PayStatus.Registered && d.CreateAt > DateTime.Now.AddDays(-filterValue));
+
+            var RegisteredCount = registered == null ? 0 : registered.Count();
+
+            var purchases = filterValue == 0 ? _uow.SellRepo.Get(d => d.Email == UserExtention.GetUserMail(User) && d.PayStatus != PayStatus.Registered) : _uow.SellRepo.Get(d => d.Email == UserExtention.GetUserMail(User) && d.PayStatus != PayStatus.Registered && d.CreateAt > DateTime.Now.AddDays(-filterValue));
+
+            var SumPurchases = purchases != null ? purchases.Sum(d => d.Price) : 0;
+
+            var CountPurchases = purchases != null ? purchases.Count() : 0;
+
+            return Json(new
+            {
+                UserPurchases = userPurchases,
+                RegisteredCount = RegisteredCount,
+                SumPurchases = SumPurchases,
+                PurchasesCount = CountPurchases,
+            });
+        }
+
+        /// <summary>
+        /// manage user profile
+        /// </summary>
+        /// <returns></returns>
 
         public async Task<IActionResult> Profile()
         {
@@ -95,7 +129,7 @@ namespace BuyerProfile.Web.Controllers
                         profileDto.Image = Guid.NewGuid().ToString() + Path.GetExtension(profileDto.Files.FileName);
                         string savePath = Path.Combine(
                             Directory.GetCurrentDirectory(), "wwwroot/UserProfile", profileDto.Image
-                            
+
                         );
 
 
@@ -131,6 +165,9 @@ namespace BuyerProfile.Web.Controllers
             }
 
         }
+        #endregion
+
+
 
     }
 }

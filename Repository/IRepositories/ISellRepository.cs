@@ -18,5 +18,8 @@ namespace Repository.IRepositories
             int skip,
             ref int recordsTotal,
             string Email);
+
+        IEnumerable<Tb_Sell> GetPurchasesOnDashboard(int count, string userMail, int filterValue = 0);
     }
+
 }

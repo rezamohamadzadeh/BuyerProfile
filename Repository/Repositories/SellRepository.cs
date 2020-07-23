@@ -2,6 +2,7 @@
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.IRepositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,7 +13,7 @@ namespace Repository.Repositories
         private readonly DbContext _db;
         public SellRepository(DbContext db) : base(db)
         {
-            _db = (_db ?? (BuyerDbContext)db);
+            _db = (_db ?? (BaseDbContext)db);
         }
 
 
@@ -111,6 +112,21 @@ namespace Repository.Repositories
 
 
             return result;
+        }
+
+        public IEnumerable<Tb_Sell> GetPurchasesOnDashboard(int count, string userMail, int filterValue = 0)
+        {
+            IQueryable<Tb_Sell> query = _dbset;
+
+
+            if (filterValue != 0)
+            {
+                query = query.Where(d => d.CreateAt > DateTime.Now.AddDays(-filterValue));
+            }
+            query = query.Where(d => d.Email == userMail);
+            query.Take(count).ToList();
+
+            return query;
         }
 
     }

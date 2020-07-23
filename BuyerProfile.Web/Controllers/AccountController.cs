@@ -1,5 +1,5 @@
-﻿using BuyerProfile.Models.AccountViewModels;
-using BuyerProfile.Web.Controllers;
+﻿using BuyerProfile.Web.Controllers;
+using BuyerProfile.Web.Models.AccountViewModels;
 using DAL;
 using DAL.Models;
 using Microsoft.AspNetCore.Authentication;

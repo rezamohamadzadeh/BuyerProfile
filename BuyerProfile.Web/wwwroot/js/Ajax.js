@@ -1,6 +1,16 @@
 ﻿$(function () {
     var placeholder = $("#modal-placeholder");
 
+    $(document).on('click', 'a[data-toggle="add-ajax-modal"]', function () {
+        var url = $(this).data('url');
+        $.ajax({
+            url: url,
+            
+        }).done(function (result) {
+            placeholder.html(result);
+            placeholder.find('.modal').modal('show');
+        });
+    });
     $(document).on('click', 'button[data-toggle="add-ajax-modal"]', function () {
         var url = $(this).data('url');
         $.ajax({

@@ -13,7 +13,7 @@ namespace Repository
     public class GenericRepositori<TEntity> :IGenericRepository<TEntity> where TEntity:class
     {
 
-        private DbContext _context;
+        protected DbContext _context;
         protected DbSet<TEntity> _dbset;
 
         public GenericRepositori(DbContext context)

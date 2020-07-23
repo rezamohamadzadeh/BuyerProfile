@@ -15,7 +15,6 @@ namespace DAL
             base.OnModelCreating(builder);
         }
 
-        public DbSet<Tb_Sell> Tb_Sells { get; set; }
 
         public DbSet<Tb_Affiliates> Tb_Affiliates { get; set; }
 

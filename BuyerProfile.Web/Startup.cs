@@ -16,6 +16,7 @@ using Repository;
 using Repository.InterFace;
 using Service;
 using Service.EmailService;
+using Stimulsoft.Base;
 
 namespace BuyerProfile.Web
 {
@@ -75,15 +76,15 @@ namespace BuyerProfile.Web
             #endregion
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(20);//You can set Time   
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
             });
-
-
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var contentRoot = env.ContentRootPath;
+            var licenseFile = System.IO.Path.Combine(contentRoot, "Reports", "license.key");
+            StiLicense.LoadFromFile(licenseFile);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -109,10 +110,6 @@ namespace BuyerProfile.Web
 
             app.UseEndpoints(endpoints =>
             {
-                ////for Area
-                //endpoints.MapControllerRoute(
-                //    name: "areas",
-                //    pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -4,6 +4,7 @@ using DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Repository.InterFace;
@@ -24,20 +25,29 @@ namespace BuyerProfile.Web.Controllers
         private readonly ILogger<AffiliateSellController> _logger;
         private readonly IEmailSender _mailSender;
         private readonly IHttpClientFactory _clientFactory;
+        private readonly IConfiguration _Config;
 
         public AffiliateSellController(IUnitOfWork<BuyerDbContext> uow,
             UserManager<ApplicationUser> userManager,
             ILogger<AffiliateSellController> logger,
             IHttpClientFactory clientFactory,
-            IEmailSender mailSender)
+            IEmailSender mailSender,
+            IConfiguration Config)
         {
             _uow = uow;
             _userManager = userManager;
             _logger = logger;
             _mailSender = mailSender;
             _clientFactory = clientFactory;
+            _Config = Config;
         }
 
+
+        /// <summary>
+        /// if buyer is not available make new account 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public async Task<IActionResult> CheckBuyerByEmail([FromQuery]string email)
         {
             try
@@ -77,11 +87,14 @@ namespace BuyerProfile.Web.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        /// <summary>
+        /// test above api
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> SendRequestToBuyerProfile()
         {
-            var url = "https://localhost:44337/api/AffiliateSell/CheckBuyerByEmail?email=";
+            var url = _Config["baseUrl"] + "/api/AffiliateSell/CheckBuyerByEmail?email=";
             url += "reza.@gmail.com";
             var client = _clientFactory.CreateClient();
 

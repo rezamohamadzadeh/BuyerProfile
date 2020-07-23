@@ -15,9 +15,9 @@ namespace BuyerProfile.Web.Controllers
     public class UserBuyListController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork<BuyerDbContext> _uow;
+        private readonly IUnitOfWork<BaseDbContext> _uow;
 
-        public UserBuyListController(IMapper mapper, IUnitOfWork<BuyerDbContext> uow)
+        public UserBuyListController(IMapper mapper, IUnitOfWork<BaseDbContext> uow)
         {
             _mapper = mapper;
             _uow = uow;
@@ -26,6 +26,10 @@ namespace BuyerProfile.Web.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// show userbuyList in listview using jquery datatable
+        /// </summary>
+        /// <returns></returns>
         public IActionResult List()
         {
             try
@@ -53,6 +57,12 @@ namespace BuyerProfile.Web.Controllers
             
         }
 
+        /// <summary>
+        /// set Rank to User Buyer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="rank"></param>
+        /// <returns></returns>
         public ActionResult RateBuy(int id, int rank)
         {
             bool success = true;
