@@ -124,9 +124,9 @@ namespace Repository.Repositories
                 query = query.Where(d => d.CreateAt > DateTime.Now.AddDays(-filterValue));
             }
             query = query.Where(d => d.Email == userMail);
-            query.Take(count).ToList();
+            query = query.Take(count);
 
-            return query;
+            return query.ToList();
         }
 
     }
