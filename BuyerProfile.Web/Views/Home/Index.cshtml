@@ -232,6 +232,7 @@
             $("#SumPurchases").html('');
             $("#RegisteredCount").html('');
             $("#PurchasesCount").html('');
+            $("#FilterValue").text(SelectedFilter);
 
             jQuery.ajax({
                 url: "/Home/GetDashboardActivities",
