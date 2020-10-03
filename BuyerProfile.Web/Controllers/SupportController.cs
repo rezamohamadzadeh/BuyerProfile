@@ -7,10 +7,15 @@ using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Repository.InterFace;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BuyerProfile.Web.Controllers
@@ -21,10 +26,17 @@ namespace BuyerProfile.Web.Controllers
         private readonly IUnitOfWork<BaseDbContext> _uow;
         private readonly IMapper _mapper;
 
-        public SupportController(IUnitOfWork<BaseDbContext> uow, IMapper mapper)
+        private readonly IHttpClientFactory _httpClient;
+        private readonly IConfiguration _configuration;
+
+        public SupportController(IUnitOfWork<BaseDbContext> uow,
+            IMapper mapper,
+            IHttpClientFactory httpClient, IConfiguration configuration)
         {
             _uow = uow;
             _mapper = mapper;
+            _httpClient = httpClient;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -47,7 +59,7 @@ namespace BuyerProfile.Web.Controllers
                     dtValues.sortColumnDirection,
                     dtValues.searchValue,
                     dtValues.pageSize,
-                    dtValues.skip, ref recordsTotal,UserExtention.GetUserId(User),
+                    dtValues.skip, ref recordsTotal, UserExtention.GetUserId(User),
                     "SupportType"));
 
                 dtValues.recordsTotal = recordsTotal;
@@ -84,7 +96,7 @@ namespace BuyerProfile.Web.Controllers
                         );
                         string DirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/supportImages");
                         Upload uploader = new Upload();
-                        supportDto.File =  Request.Scheme + "://" + Request.Host.Value + "/supportImages/" + File;
+                        supportDto.File = Request.Scheme + "://" + Request.Host.Value + "/supportImages/" + File;
                         await uploader.UploadImage(savePath, DirectoryPath, supportDto.Attachment);
                     }
 
@@ -95,6 +107,13 @@ namespace BuyerProfile.Web.Controllers
                     await _uow.SupportRepo.InsertAsync(model);
 
                     await _uow.SaveAsync();
+
+                    // Call signalr api for show notification in admin panel
+                    supportDto.Id = model.Id;
+
+                    if (!await SendDataToSignalR(model)) // if send notif with signalr has failed
+                        return Json(new { success = "Support messages added successfully, But The send notification to admin failed  \n" });
+
                     return View(supportDto);
                 }
                 catch (Exception e)
@@ -104,6 +123,7 @@ namespace BuyerProfile.Web.Controllers
             }
             return View(supportDto);
         }
+
         public async Task<IActionResult> Delete(int? id)
         {
             try
@@ -251,5 +271,46 @@ namespace BuyerProfile.Web.Controllers
                 ViewBag.ErrorMessage = ErrorMessageForGetInformation + e.Message;
             }
         }
+
+
+        /// <summary>
+        /// for send data as api to signalr project
+        /// </summary>
+        private async Task<bool> SendDataToSignalR(Tb_Support model)
+        {
+            try
+            {
+                var client = _httpClient.CreateClient();
+                var senderName = User.Identity.Name;
+                var data = new NotificationDto
+                {
+                    Title = $"New Ticket",
+                    Body = model.Message,
+                    Id = model.Id.ToString(),
+                    Sender = senderName
+                };
+
+                HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(data),
+                                        Encoding.UTF8, "application/json");
+
+                var serverUrl = _configuration.GetSection("signalRApiUrl").Value;
+
+                HttpResponseMessage response = await client.PostAsync($"{serverUrl}/api/Notifications", httpContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else return false;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
+
+        }
+
     }
 }

@@ -78,6 +78,8 @@ namespace BuyerProfile.Web
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(20);
             });
+
+
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

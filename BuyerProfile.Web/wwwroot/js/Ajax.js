@@ -127,6 +127,12 @@ var AddSuccess = function (context) {
         Swal.fire({ title: "Warning", html: context.warning, icon: "warning", showCancelButton: 0, confirmButtonColor: "#3051d3" })
         return;
     }
+    if (context.success != null) {
+        Swal.fire({ title: "Successfully", html: context.success, icon: "success", showCancelButton: 0, confirmButtonColor: "#3051d3" })
+        $('#myTable').DataTable().ajax.reload();
+        ResetForm();
+        return;
+    }
     $('#myTable').DataTable().ajax.reload();
     ResetForm();
     Swal.fire({ title: "Successfully", text: "Information added successfully", icon: "success", showCancelButton: 0, confirmButtonColor: "#3051d3" })
